@@ -32607,7 +32607,7 @@ const run = (inputs) => __awaiter(void 0, void 0, void 0, function* () {
         if (pullRequest.mergeable !== null) {
             core.setOutput('pull_request', JSON.stringify(pullRequest));
             if (pullRequest.mergeable) {
-                core.setOutput('merge_commit_sha', JSON.stringify(pullRequest.merge_commit_sha));
+                core.setOutput('merge_commit_sha', pullRequest.merge_commit_sha);
             }
             return;
         }
