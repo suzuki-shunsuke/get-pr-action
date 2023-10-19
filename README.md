@@ -11,8 +11,9 @@ Until the merge commit is created at GitHub, the pull request's `mergeable` is `
 
 ## Usage
 
+All inputs are optional. You can get the result from the output.
+
 ```yaml
-# All inputs are optional
 - uses: suzuki-shunsuke/get-pr-action
   id: pr
 - run: echo "$CREATED_AT"
@@ -23,11 +24,15 @@ Until the merge commit is created at GitHub, the pull request's `mergeable` is `
     MERGE_COMMIT_SHA: ${{steps.pr.outputs.merge_commit_sha}}
 ```
 
+You can also specify some inputs.
+
 ```yaml
-uses: suzuki-shunsuke/get-pr-action
-with:
-  github_token: ${{secrets.PAT}}
-  number: 10
+- uses: suzuki-shunsuke/get-pr-action
+  with:
+    github_token: ${{secrets.PAT}}
+    number: 10
+    timeout: 30
+    interval: 1
 ```
 
 ## Inputs
