@@ -20,7 +20,7 @@ export const run = async (inputs: Inputs): Promise<void> => {
     if (pullRequest.mergeable !== null) {
       core.setOutput('pull_request', JSON.stringify(pullRequest));
       if (pullRequest.mergeable) {
-        core.setOutput('merge_commit_sha', JSON.stringify(pullRequest.merge_commit_sha));
+        core.setOutput('merge_commit_sha', pullRequest.merge_commit_sha);
       }
       return
     }
