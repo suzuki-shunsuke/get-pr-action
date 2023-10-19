@@ -3,6 +3,12 @@
 Get the current pull request information by GitHub API.
 This action waits until the pull request `mergeable` gets non `null`.
 
+## Motivation
+
+We created this action to checkout the repository with the merge commit in workflows triggered by `pull_request_target`.
+The value `${{github.event.pull_request.merge_commit_sha}}` of `pull_request_target` is stale, so you need to get the correct value by GitHub API.
+Until the merge commit is created at GitHub, the pull request's `mergeable` is `null` and `merge_commit_sha` is incorrect, so this action calls API until the pull request's `mergeable` gets non `null`.
+
 ## Usage
 
 ```yaml
@@ -30,6 +36,11 @@ with:
 - `number`: Pull Request number. The default value is `${{github.event.number}}`
 - `timeout`: timeout. The default value is `60` seconds
 - `interval`: interval. The default value is `5` seconds
+
+## Outputs
+
+- `pull_request`: The payload of [Get a Pull Request API](https://docs.github.com/en/free-pro-team@latest/rest/pulls/pulls?apiVersion=2022-11-28#get-a-pull-request)
+- `merge_commit_sha` The commit hash of the merge commit. If timeout occurs or the pull request isn't mergeable, this output is empty
 
 ## LICENSE
 
