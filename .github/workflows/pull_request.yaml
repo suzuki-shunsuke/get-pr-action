@@ -1,0 +1,52 @@
+name: pull_request
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  path-filter:
+    outputs:
+      renovate-config-validator: ${{steps.changes.outputs.renovate-config-validator}}
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - uses: dorny/paths-filter@4512585405083f25c027a35db413c2b3b9006d50 # v2.11.1
+        id: changes
+        with:
+          filters: |
+            renovate-config-validator:
+              - renovate.json5
+              - .github/workflows/test.yaml
+              - .github/workflows/wc-renovate-config-validator.yaml
+
+  status-check:
+    runs-on: ubuntu-latest
+    needs:
+      - test
+      - renovate-config-validator
+    permissions: {}
+    if: failure()
+    steps:
+      - run: exit 1
+
+  enable-auto-merge:
+    uses: ./.github/workflows/wc-enable-auto-merge.yaml
+    secrets: inherit
+    permissions: {}
+    needs:
+      - status-check
+    if: |
+      ! failure() && ! cancelled() && github.event.pull_request.user.login == 'renovate[bot]' && contains(github.event.pull_request.body, ' **Automerge**: Enabled.')
+
+  renovate-config-validator:
+    uses: ./.github/workflows/wc-renovate-config-validator.yaml
+    needs: path-filter
+    if: needs.path-filter.outputs.renovate-config-validator == 'true'
+    permissions:
+      contents: read
+
+  test:
+    uses: ./.github/workflows/wc-test.yaml
+    permissions: {}
