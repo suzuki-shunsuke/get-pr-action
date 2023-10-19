@@ -14,7 +14,7 @@ Until the merge commit is created at GitHub, the pull request's `mergeable` is `
 All inputs are optional. You can get the result from the output.
 
 ```yaml
-- uses: suzuki-shunsuke/get-pr-action
+- uses: suzuki-shunsuke/get-pr-action@v0.1.0
   id: pr
 - run: echo "$CREATED_AT"
   env:
@@ -27,7 +27,7 @@ All inputs are optional. You can get the result from the output.
 You can also specify some inputs.
 
 ```yaml
-- uses: suzuki-shunsuke/get-pr-action
+- uses: suzuki-shunsuke/get-pr-action@v0.1.0
   with:
     github_token: ${{secrets.PAT}}
     number: 10
