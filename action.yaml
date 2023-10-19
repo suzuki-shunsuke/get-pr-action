@@ -1,0 +1,14 @@
+name: Get pull request information from the pull request number
+description: Get pull request information from the pull request number
+inputs:
+  github_token:
+    description: GitHub Access Token
+    required: false
+    default: ${{github.token}}
+  number:
+    description: pull request number
+    required: false
+    default: ${{github.event.number}}
+runs:
+  using: node20
+  main: dist/index.js
