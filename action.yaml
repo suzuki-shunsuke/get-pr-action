@@ -9,6 +9,14 @@ inputs:
     description: pull request number
     required: false
     default: ${{github.event.number}}
+  timeout:
+    description: timeout
+    required: false
+    default: 60
+  interval:
+    description: interval
+    required: false
+    default: 5
 runs:
   using: node20
   main: dist/index.js

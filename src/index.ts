@@ -5,6 +5,8 @@ const main = async (): Promise<void> => {
   await run({
     number: parseInt(core.getInput('number', { required: true })),
     githubToken: core.getInput('github_token', { required: true }),
+    timeout: parseInt(core.getInput('timeout', { required: true })),
+    interval: parseInt(core.getInput('interval', { required: true })),
   })
 }
 

@@ -32548,6 +32548,8 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, run_1.run)({
         number: parseInt(core.getInput('number', { required: true })),
         githubToken: core.getInput('github_token', { required: true }),
+        timeout: parseInt(core.getInput('timeout', { required: true })),
+        interval: parseInt(core.getInput('interval', { required: true })),
     });
 });
 main().catch((e) => core.setFailed(e instanceof Error ? e.message : JSON.stringify(e)));
@@ -32600,11 +32602,23 @@ const run = (inputs) => __awaiter(void 0, void 0, void 0, function* () {
     core.info('Getting a pull request');
     const context = github.context;
     const octokit = github.getOctokit(inputs.githubToken);
-    const { data: pullRequest } = yield octokit.rest.pulls.get(Object.assign(Object.assign({}, context.repo), { pull_number: inputs.number }));
-    core.setOutput('pull_request', JSON.stringify(pullRequest));
-    core.setOutput('merge_commit_sha', JSON.stringify(pullRequest.merge_commit_sha));
+    for (let time = 0; time < inputs.timeout; time += inputs.interval) {
+        const { data: pullRequest } = yield octokit.rest.pulls.get(Object.assign(Object.assign({}, context.repo), { pull_number: inputs.number }));
+        if (pullRequest.mergeable !== null) {
+            core.setOutput('pull_request', JSON.stringify(pullRequest));
+            if (pullRequest.mergeable) {
+                core.setOutput('merge_commit_sha', JSON.stringify(pullRequest.merge_commit_sha));
+            }
+            return;
+        }
+        core.info('mergeable is still null. Retrying ...');
+        yield sleep(inputs.interval * 1000);
+        core.setOutput('pull_request', JSON.stringify(pullRequest));
+    }
+    core.warning('timeout');
 });
 exports.run = run;
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 
 /***/ }),
