@@ -2,5 +2,16 @@
   extends: [
     "github>suzuki-shunsuke/renovate-config#3.0.2",
     "github>suzuki-shunsuke/renovate-config:nolimit#3.0.2",
+  ],
+  packageRules: [
+     {
+        allowedVersions: "<= 20",
+        groupName: "Node.js",
+        matchPackageNames: [
+           "node",
+           "nodejs/node",
+           "@types/node"
+        ]
+     }
   ]
 }
