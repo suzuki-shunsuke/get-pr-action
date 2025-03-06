@@ -1,10 +1,8 @@
 name: pull_request
-
 on:
   pull_request:
     branches:
       - main
-
 jobs:
   path-filter:
     timeout-minutes: 30
@@ -21,17 +19,6 @@ jobs:
               - renovate.json5
               - .github/workflows/test.yaml
               - .github/workflows/wc-renovate-config-validator.yaml
-
-  status-check:
-    timeout-minutes: 30
-    runs-on: ubuntu-latest
-    needs:
-      - test
-      - renovate-config-validator
-    permissions: {}
-    if: failure()
-    steps:
-      - run: exit 1
 
   renovate-config-validator:
     uses: ./.github/workflows/wc-renovate-config-validator.yaml
