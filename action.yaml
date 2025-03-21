@@ -17,6 +17,11 @@ inputs:
     description: interval
     required: false
     default: 5
+outputs:
+  pull_request:
+    description: pull request
+  merge_commit_sha:
+    description: merge commit sha
 runs:
   using: node20
   main: dist/index.js
