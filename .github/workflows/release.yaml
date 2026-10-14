@@ -1,0 +1,24 @@
+---
+name: Release
+run-name: Release ${{inputs.tag}}
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "tag"
+        required: true
+      pr:
+        description: "pr number (pre-release)"
+        required: false
+jobs:
+  release:
+    uses: suzuki-shunsuke/js-action-release-workflow/.github/workflows/release.yaml@89c0f9f455f977a280103a7f450573adac9d8cf6 # v0.0.1
+    secrets:
+      TAKUMI_GUARD_BOT_ID: ${{secrets.TAKUMI_GUARD_BOT_ID}}
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+    with:
+      version: ${{inputs.tag}}
+      pr: ${{inputs.pr}}
