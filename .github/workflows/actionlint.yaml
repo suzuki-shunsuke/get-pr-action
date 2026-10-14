@@ -13,3 +13,6 @@ jobs:
         with:
           persist-credentials: false
       - uses: suzuki-shunsuke/actionlint-action@83c4a4a3b228afcf6dbf79d793c742de182de31e # v0.2.2
+        with:
+          # dist/index.js isn't committed in this repository
+          ignores: file "dist/index.js" does not exist
