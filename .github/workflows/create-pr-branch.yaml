@@ -1,0 +1,26 @@
+---
+name: Create Pull Request Branch
+run-name: Create Pull Request Branch (${{inputs.pr}})
+on:
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: "Pull Request Number"
+        required: true
+      is_comment:
+        description: Whether a comment is posted
+        type: boolean
+        required: true
+jobs:
+  create-pr-branch:
+    uses: suzuki-shunsuke/js-action-release-workflow/.github/workflows/release.yaml@16e5ae83421dd948ccc5171777361ee8a389d550 # v0.0.3
+    secrets:
+      TAKUMI_GUARD_BOT_ID: ${{secrets.TAKUMI_GUARD_BOT_ID}}
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+    with:
+      version: pr/${{inputs.pr}}
+      pr: ${{inputs.pr}}
+      is_comment: ${{inputs.is_comment}}

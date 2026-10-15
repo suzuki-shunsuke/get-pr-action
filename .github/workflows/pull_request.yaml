@@ -6,12 +6,15 @@ concurrency:
 jobs:
   test:
     uses: ./.github/workflows/workflow_call_test.yaml
+    secrets:
+      TAKUMI_GUARD_BOT_ID: ${{secrets.TAKUMI_GUARD_BOT_ID}}
     permissions:
-      contents: read
-      pull-requests: read
+      contents: write
+      pull-requests: write
+      id-token: write
   status-check:
     runs-on: ubuntu-26.04
-    if: failure()
+    if: always() && (contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled'))
     timeout-minutes: 10
     permissions: {}
     needs:
